@@ -1,1 +1,6 @@
 bin
+/UUGoogleSync/UUGoogleSync.log
+/UUGoogleSync/log/UUGoogleSync.log
+/UUGoogleSync/etc/UUGoogleSync.properties
+/UUGoogleSyncChecker/build
+/UUGoogleSyncChecker/etc/SupportedIds.txt
