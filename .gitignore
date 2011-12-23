@@ -3,5 +3,6 @@ bin
 /UUGoogleSync/log/UUGoogleSync.log
 /UUGoogleSync/etc/UUGoogleSync.properties
 /UUGoogleSync/others/UUGoogleSync.properties.default
+/UUGoogleSync/src/cz/pavel/uugooglesync/other/TokenGenerator.java
 /UUGoogleSyncChecker/build
 /UUGoogleSyncChecker/etc/SupportedIds.txt
