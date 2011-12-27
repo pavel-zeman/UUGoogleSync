@@ -28,7 +28,7 @@ public class Checker extends HttpServlet {
 		String line;
 		try {
 			while ((line = reader.readLine()) != null) {
-				if (line.equals(inputId)) {
+				if (line.trim().equals(inputId)) {
 					response.getWriter().append('1');
 					return;
 				}
