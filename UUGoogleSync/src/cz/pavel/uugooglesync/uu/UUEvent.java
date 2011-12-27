@@ -24,7 +24,7 @@ public class UUEvent {
 	public void setStatusImg(String statusImg) {
 		if ("S36_C06".equals(statusImg) || "S36_C02".equals(statusImg)) {
 			setStatus(EventStatus.PARTICIPATED);
-		} else if ("S37_C03".equals(statusImg)) {
+		} else if ("S37_C03".equals(statusImg) || "S37_C04".equals(statusImg)) {
 			setStatus(EventStatus.NOT_PARTICIPATED);
 		} else if ("S10_C02".equals(statusImg)) {
 			setStatus(EventStatus.ACCEPTED);
