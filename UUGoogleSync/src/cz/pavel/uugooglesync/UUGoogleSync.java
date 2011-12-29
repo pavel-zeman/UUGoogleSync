@@ -37,6 +37,7 @@ public class UUGoogleSync {
 	private TrayIcon trayIcon; 
 	
 	private static final int MIN_SYNC_INTERVAL = 60;
+	private static final int MIN_SYNC_INTERVAL_AFTER_FAILURE = 10;
 	private static final String DEFAULT_SYSTRAY_MESSAGE = "UUGoogleSync";
 	private static final int ONE_MINUTE_SLEEP = 60 * 1000;
 	
@@ -149,7 +150,10 @@ public class UUGoogleSync {
 		}
 		if (lastSuccessfulSync > 0) {
 			tooltipMessage += "\nPoslední úspěšná synchronizace: " + DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(new Date(lastSuccessfulSync));
-			tooltipMessage += "\nVytvořeno: " + lastInserted + "\nUpraveno: " + lastUpdated + "\nSmaz�no: " + lastDeleted;
+			// only add detailed statistics, if there was no failure
+			if (lastFailedSync == 0) {
+				tooltipMessage += "\nVytvořeno: " + lastInserted + "\nUpraveno: " + lastUpdated + "\nSmaz�no: " + lastDeleted;
+			}
 			
 		}
 		setSysTrayTooltip(tooltipMessage);
@@ -163,6 +167,14 @@ public class UUGoogleSync {
 			log.warn("Sync interval increased to " + syncInterval);
 		}
 		syncInterval *= 60 * 1000;
+
+		int syncIntervalAfterFailure = Configuration.getInt(Configuration.Parameters.SYNC_INTERVAL_AFTER_FAILURE, MIN_SYNC_INTERVAL_AFTER_FAILURE);
+		if (syncIntervalAfterFailure < MIN_SYNC_INTERVAL_AFTER_FAILURE) {
+			syncIntervalAfterFailure = MIN_SYNC_INTERVAL_AFTER_FAILURE;
+			log.warn("Sync interval after failure increased to " + syncIntervalAfterFailure);
+		}
+		syncIntervalAfterFailure *= 60 * 1000;
+
 		// set icon
 		setSysTrayIcon();
 		updateTooltip();
@@ -171,19 +183,22 @@ public class UUGoogleSync {
 			log.info("Starting sync");
 			long start = System.currentTimeMillis();
 			long lastSyncCompleteTime = System.currentTimeMillis();
+			long timeToSleep = 0;
 			try {
 				Map<String, Event> googleEvents = loadGoogleEvents();
 				Map<String, UUEvent> uuEvents = loadUUEvents();
 				compareAndSynchronize(uuEvents, googleEvents);
 				lastSuccessfulSync = lastSyncCompleteTime = System.currentTimeMillis();
 				lastFailedSync = 0;
+				timeToSleep = syncInterval;
 				log.info("Sync completed in " + ((lastSyncCompleteTime - start + 500) / 1000) + " s");
 			} catch (Exception e) {
 				lastFailedSync = System.currentTimeMillis();
+				timeToSleep = syncIntervalAfterFailure;
 				log.error("Sync failed in " + ((lastFailedSync - start + 500) / 1000) + " s", e);
 			}
 			
-			while (System.currentTimeMillis() - lastSyncCompleteTime < syncInterval) {
+			while (System.currentTimeMillis() - lastSyncCompleteTime < timeToSleep) {
 				updateTooltip();
 				
 				try {

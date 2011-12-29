@@ -25,6 +25,7 @@ public class Configuration {
 	
 	public static class Parameters {
 		public static final String SYNC_INTERVAL = "syncInterval";
+		public static final String SYNC_INTERVAL_AFTER_FAILURE = "syncIntervalAfterFailure";
 		public static final String SYNC_DAYS_BEFORE = "syncDaysBefore";
 		public static final String SYNC_DAYS_AFTER = "syncDaysAfter";
 		
