@@ -145,11 +145,11 @@ public class UUGoogleSync {
 	private void updateTooltip() {
 		String tooltipMessage = DEFAULT_SYSTRAY_MESSAGE;
 		if (lastFailedSync > 0) {
-			tooltipMessage += "\nPoslední synchronizace selhala. Èas: " + DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(new Date(lastFailedSync));
+			tooltipMessage += "\nPoslednÃ­ synchronizace selhala. ÄŒas: " + DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(new Date(lastFailedSync));
 		}
 		if (lastSuccessfulSync > 0) {
-			tooltipMessage += "\nPoslední úspìšná synchronizace: " + DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(new Date(lastSuccessfulSync));
-			tooltipMessage += "\nVytvoøeno: " + lastInserted + "\nUpraveno: " + lastUpdated + "\nSmazáno: " + lastDeleted;
+			tooltipMessage += "\nPoslednÃ­ ÃºspÄ›Å¡nÃ¡ synchronizace: " + DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(new Date(lastSuccessfulSync));
+			tooltipMessage += "\nVytvoÅ™eno: " + lastInserted + "\nUpraveno: " + lastUpdated + "\nSmazï¿½no: " + lastDeleted;
 			
 		}
 		setSysTrayTooltip(tooltipMessage);

@@ -62,7 +62,7 @@ public class UUGoogleSyncConfigurator extends JFrame implements ActionListener {
 		this.add(getLabel("Interval pro synchronizaci (minuty)"), getConstraints(0, 0));
 		this.add(syncInterval = getTextField(10), getConstraints(1, 0, true, 2));
 
-		this.add(getLabel("PoËet dn˘ pro synchronizaci p¯ed a po aktu·lnÌm dnu"), getConstraints(0, 1));
+		this.add(getLabel("Poƒçet dn√≠ pro synchronizaci p≈ôed a po aktu√°ln√≠m dnu"), getConstraints(0, 1));
 		this.add(syncDaysBefore = getTextField(5), getConstraints(1, 1, true));
 		this.add(syncDaysAfter = getTextField(5), getConstraints(2, 1, true));
 
@@ -74,7 +74,7 @@ public class UUGoogleSyncConfigurator extends JFrame implements ActionListener {
 		this.add(uuAccessCode2 = getPasswordField(12), getConstraints(1, 3, true, 2));
 
 		this.add(getLabel(" "), getConstraints(0, 4, true, 3));
-		this.add(getLabel("V prohlÌûeËi p¯ejdÏte na n·sledujÌcÌ URL a postupujte podle instrukcÌ (staËÌ p¯i prvnÌm pouûitÌ)"), getConstraints(0, 5, true, 3));
+		this.add(getLabel("V prohl√≠≈æeƒçi p≈ôejdƒõte na n√°sleduj√≠c√≠ URL a postupujte podle instrukc√≠ (staƒç√≠ p≈ôi prvn√≠m pou≈æit√≠)"), getConstraints(0, 5, true, 3));
 		GridBagConstraints googleUrlConstraints = getConstraints(0, 6, true, 3);
 		googleUrlConstraints.fill = GridBagConstraints.BOTH;
 		googleUrlConstraints.weighty = 1;
@@ -82,7 +82,7 @@ public class UUGoogleSyncConfigurator extends JFrame implements ActionListener {
 		googleUrl.setEditable(false);
 		googleUrl.setLineWrap(true);
 
-		this.add(getLabel("KÛd vygenerovan˝ pomocÌ p¯edchozÌho URL"), getConstraints(0, 7));
+		this.add(getLabel("K√≥d vygenerovan√Ω pomoc√≠ p≈ôedchoz√≠ho URL"), getConstraints(0, 7));
 		this.add(googleCode = getTextField(10), getConstraints(1, 7, true, 2));
 
 		this.add(getLabel(" "), getConstraints(0, 8, true, 3));
@@ -182,7 +182,7 @@ public class UUGoogleSyncConfigurator extends JFrame implements ActionListener {
 				Configuration.setEncryptedString(Configuration.Parameters.GOOGLE_REFRESH_TOKEN, response.refreshToken);
 			} catch (IOException e) {
 				log.error("Error when generating google token", e);
-				JOptionPane.showMessageDialog(this, "Chyba p¯i generov·nÌ Google token˘", "Chyba", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this, "Chyba p≈ôi generov√°n√≠ Google token≈Ø", "Chyba", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 		}
@@ -191,7 +191,7 @@ public class UUGoogleSyncConfigurator extends JFrame implements ActionListener {
 			Configuration.storeProperties();
 		} catch (IOException ioe) {
 			log.error("Error writing properties to file", ioe);
-			JOptionPane.showMessageDialog(this, "Chyba p¯i aktualizaci konfigurace", "Chyba", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Chyba p≈ôi aktualizaci konfigurace", "Chyba", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		WindowEvent windowClosing = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
