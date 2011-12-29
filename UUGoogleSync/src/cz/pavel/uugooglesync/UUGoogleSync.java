@@ -152,7 +152,7 @@ public class UUGoogleSync {
 			tooltipMessage += "\nPoslední úspěšná synchronizace: " + DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(new Date(lastSuccessfulSync));
 			// only add detailed statistics, if there was no failure
 			if (lastFailedSync == 0) {
-				tooltipMessage += "\nVytvořeno: " + lastInserted + "\nUpraveno: " + lastUpdated + "\nSmaz�no: " + lastDeleted;
+				tooltipMessage += "\nVytvořeno: " + lastInserted + "\nUpraveno: " + lastUpdated + "\nSmazáno: " + lastDeleted;
 			}
 			
 		}
