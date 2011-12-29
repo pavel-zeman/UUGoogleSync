@@ -1,0 +1,36 @@
+<project name="UUGoogleSyncChecker" default="build">
+
+	<property name="build.directory"      value="build"/>
+	<property name="classes.directory"    value="${build.directory}/ant-classes"/>
+	<property name="source.directory"     value="src"/>
+	<property name="tomcat.path"	      value="c:\software\Apache\apache-tomcat-6.0.32"/>
+
+
+	<!-- default target -->
+	<target name="build">
+		<!-- prepare directory -->
+		<delete dir="${classes.directory}" quiet="true"/>
+		<mkdir dir="${classes.directory}"/>
+
+		<!-- compile source files -->
+		<javac srcdir="${source.directory}" destdir="${classes.directory}" encoding="UTF-8" fork="true">
+			<classpath>
+				<fileset dir="${tomcat.path}/lib">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+
+		<!-- package all into war -->
+		<loadfile srcfile="../.git/refs/heads/master" property="git.revision"/>
+		<war destfile="${build.directory}/UUGoogleSyncChecker.war" webxml="WebContent/WEB-INF/web.xml">
+			<classes dir="${classes.directory}"/>
+			<classes dir="etc"/>
+			<manifest>
+				<attribute name="Commit" value="${git.revision}"/>
+			</manifest>
+		</war>
+
+	</target>
+
+</project>
