@@ -1,9 +1,9 @@
 bin
-/UUGoogleSync/UUGoogleSync.log
-/UUGoogleSync/log/UUGoogleSync.log
+/UUGoogleSync/log
 /UUGoogleSync/etc/UUGoogleSync.properties
 /UUGoogleSync/others/UUGoogleSync.properties.default
 /UUGoogleSync/src/cz/pavel/uugooglesync/other/TokenGenerator.java
 /UUGoogleSync/src/cz/pavel/uugooglesync/other/Encrypter.java
+/UUGoogleSync/build
 /UUGoogleSyncChecker/build
 /UUGoogleSyncChecker/etc/SupportedIds.txt
