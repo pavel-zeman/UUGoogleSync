@@ -2,7 +2,7 @@
   <dontWrapJar>true</dontWrapJar>
   <headerType>gui</headerType>
   <jar>lib\UUGoogleSync.jar</jar>
-  <outfile>c:\software\UUGoogleSync\UUGoogleSync.exe</outfile>
+  <outfile>..\build\application\UUGoogleSync.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>
@@ -12,7 +12,7 @@
   <customProcName>true</customProcName>
   <stayAlive>false</stayAlive>
   <manifest></manifest>
-  <icon>c:\temp\test\UUGoogleSync\others\icon.ico</icon>
+  <icon>icon.ico</icon>
   <singleInstance>
     <mutexName>UU_GOOGLE_SYNC_MUTEX</mutexName>
     <windowTitle></windowTitle>
