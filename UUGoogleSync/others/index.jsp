@@ -95,11 +95,17 @@ Aplikace je k dispozici zdarma jako plně funkční alfa verze, nicméně v sou�
   </li>   
 </ol>
 
+<h2>Nastavil jsem si synchronizaci každou půlhodinu, ale data se synchronizují pouze jednou za hodinu. Proč?</h2>
+<p>
+Minimální možný interval pro synchronizaci je jedna hodina. Jakýkoliv kratší interval se ignoruje.
+Důvodem je výše uvedené omezení na počet volání Google API a minimalizace zátěže na Unicorn Universe.
+</p>
+
 <h2>Je nutné spouštět nějakou aplikaci na mém vlastním počítači? Nemohl by synchronizaci provádět nějaký server?</h2>
 <p>Mohl. Dokonce je to technicky velice jednoduché. Problém je ovšem v tom, že by na jednom místě byly přístupové kódy do Unicorn Universe pro všechny uživatele aplikace,
 což považuji za relativně velké bezpečnostní riziko. Proto o této variantě zatím neuvažuji.</p>
 
-<h2><a name="FAQ_LINUX">Běží aplikace i pod Linuxem, Mac OS X nebo mým oblíbeným operačním systémem?</a></h2>
+<h2><a name="FAQ_LINUX">Běží aplikace i pod Linuxem, Mac OS X nebo jiným mým oblíbeným operačním systémem?</a></h2>
 <p>
 Aplikace je implementovaná v Javě SE a měla by tedy fungovat pod libovolným operačním systémem, pro který je k dispozici JRE verze 6 nebo vyšší.
 Pro spuštění aplikace pod jiným operačním systémem než MS Windows nelze samozřejmě použít dodávané EXE soubory, ale je nutné použít přímo JRE a aplikační JARy.
@@ -119,7 +125,13 @@ Pokud ani potom aplikace nefunguje, zkuste zkontrolovat aplikační log (<tt>log
 <p>Aplikace je v alfa verzi a používáte ji na vlastní riziko, takže sorry (ale já ji používám už cca týden a zatím je to bez problémů).</p>
 
 <h2>Proč je ta ikona v systray tak hnusná?</h2>
-<p>Nejsem grafik, snažil jsem se vytvořit alespoň něco. Zkusím udělat lepší.</p>
+<p>
+Bohužel jde o <a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6453521">problém Javy</a> (Sun/Oracle na něj kašle již více než 5 let!), 
+která pro ikony v systray nepodporuje korektně průhlednost. Ikona je potom ošklivě zubatá.
+</p>
+<p>Pokud pozadí ikony vyplním konkrétní barvou a udělám ho neprůhledné, tak ikona vypadá výrazně lépe. 
+Bohužel toto řešení není univerzální, protože uživateli s modrým systray se mé černé pozadí příliš líbit nebude.
+</p>
 
 
 <h2>Proč mají schůzky v kalendáři Google postfix (UU)?</h2>
