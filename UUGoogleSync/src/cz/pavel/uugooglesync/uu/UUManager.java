@@ -36,18 +36,28 @@ public class UUManager {
 	private static final Pattern DATE_TIME_PATTERN = Pattern.compile("([0-9]*)\\.([0-9]*)\\.([0-9]*) ([0-9]*):([0-9]*) - ([0-9]*)\\.([0-9]*)\\.([0-9]*) ([0-9]*):([0-9]*)");
 	private static final Pattern TIME_PATTERN = Pattern.compile("([0-9]*):([0-9]*) - ([0-9]*):([0-9]*)");
 	
-	private String clickLink(String id, String data) throws IOException {
-		String newUrl = HtmlParser.extractRegExp(data, "<A[^>]*id=\"" + id + "\"[^>]*href=\"([^\"]*)\"");
-		newUrl = newUrl.replace("&amp;", "&");
-		HttpGet httpGet = new HttpGet(UIS_BASE_URL + newUrl);
+	// total bytes read from server (it is not precise, it is just an estimate)
+	private int totalBytes;
+	
+	private String doGet(String url) throws ClientProtocolException, IOException {
+		url = url.replace("&amp;", "&");
+		url = url.replace("|", "%7C");
+		HttpGet httpGet = new HttpGet(UIS_BASE_URL + url);
         log.debug("Sending GET request to " + httpGet.getURI());
         HttpResponse response = httpclient.execute(httpGet);
         HttpEntity entity = response.getEntity();
-        return HtmlParser.getContents(entity.getContent());
+        String data = HtmlParser.getContents(entity.getContent());
+        totalBytes += data.length();
+        return data;
+	}
+	
+	private String clickLink(String id, String data) throws IOException {
+		return doGet(HtmlParser.extractRegExp(data, "<A[^>]*id=\"" + id + "\"[^>]*href=\"([^\"]*)\""));
 	}
 	
 	
 	public Map<String, UUEvent> getEvents(Calendar startDate, Calendar endDate) throws ClientProtocolException, IOException {
+		totalBytes = 0;
 		log.debug("Loading events from " + CalendarUtils.calendarToGoogleString(startDate) + " to end of " + CalendarUtils.calendarToGoogleString(endDate));
 		
 		httpclient = new DefaultHttpClient();
@@ -65,6 +75,7 @@ public class UUManager {
         
         log.debug("Sending POST request to " + httpost.getURI());
         String data = HtmlParser.getContents(entity.getContent());
+        totalBytes += data.length();
         
         // go to calendar
         data = clickLink("a_toolBar-personal-calendar", data);
@@ -163,6 +174,12 @@ public class UUManager {
 	        currentDateString = HtmlParser.extractRegExp(data, "<SPAN class=\"diary-navigation-time-description\">[^<]*</SPAN><SPAN>, ([0-9.]*) ");
 	        currentDate = CalendarUtils.stringToDate(currentDateString);
         }
+        
+        // logout
+        data = doGet(HtmlParser.extractRegExp(data, "<LI id=\"li_menubar-system-logout\"><a href=\"([^\"]*)\""));
+        
+        log.info("Total KBs read: " + (totalBytes / 1024));
+        
         log.info("Total events: " + result.size());
         return result;
 	}
