@@ -47,12 +47,10 @@ public class UUGoogleSync {
 	
 	
 	private Map<String, UUEvent> loadUUEvents() throws ClientProtocolException, IOException {
-		uuManager = new UUManager();
 		return uuManager.getEvents(CalendarUtils.getStartDate(), CalendarUtils.getEndDate());
 	}
 	
 	private Map<String, Event> loadGoogleEvents() throws IOException {
-		googleManager = new GoogleManager();
 		return googleManager.getEvents(CalendarUtils.getStartDate(), CalendarUtils.getEndDateSunday());
 	}
 	
@@ -178,6 +176,11 @@ public class UUGoogleSync {
 		// set icon
 		setSysTrayIcon();
 		updateTooltip();
+		
+		// initialize
+		uuManager = new UUManager();
+		googleManager = new GoogleManager();
+
 		
 		while (true) {
 			log.info("Starting sync");
