@@ -39,11 +39,16 @@
 		<copy todir="${application.directory}/lib">
 			<fileset dir="lib"/>
 		</copy>
+		
 		<loadfile srcfile="../.git/refs/heads/master" property="git.revision"/>
+		<tstamp>
+			<format property="build.timestamp" pattern="yyyy-MM-dd HH:mm"/>
+		</tstamp>
 		<jar destfile="${application.directory}/lib/UUGoogleSync.jar">
 			<fileset dir="${build.directory}/classes"/>
 			<fileset dir="etc" excludes="UUGoogleSync.properties"/>
 			<manifest>
+				<attribute name="Built-On" value="${build.timestamp}"/>
 				<attribute name="Commit" value="${git.revision}"/>
 			</manifest>
 		</jar>
