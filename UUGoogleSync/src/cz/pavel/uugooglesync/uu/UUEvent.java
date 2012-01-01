@@ -1,10 +1,26 @@
 package cz.pavel.uugooglesync.uu;
 
+import java.io.IOException;
 import java.util.Calendar;
+import java.util.Properties;
+
+import org.apache.log4j.Logger;
+
+import cz.pavel.uugooglesync.utils.LogUtils;
 
 public class UUEvent {
 	
+	/** Name of file containing mapping of UU status images to application statuses */ 
+	private static final String MAPPING_CONFIGURATION_FILE = "/UUStatusMapping.properties";
+	
+	/** Mapping of UU status images to application statuses */
+	private static Properties statusMapping;
+	
+	/** Logger */
+	private static final Logger log = LogUtils.getLogger();
+	
 	public enum EventStatus {ACCEPTED, INFORMATION, REJECTED, PARTICIPATED, NOT_PARTICIPATED, PROPOSED, PROBLEM};
+	
 	
 	private EventStatus status;
 	private String id;
@@ -22,23 +38,21 @@ public class UUEvent {
 	}
 	
 	public void setStatusImg(String statusImg) {
-		if ("S36_C06".equals(statusImg) || "S36_C02".equals(statusImg)) {
-			setStatus(EventStatus.PARTICIPATED);
-		} else if ("S37_C03".equals(statusImg) || "S37_C04".equals(statusImg)) {
-			setStatus(EventStatus.NOT_PARTICIPATED);
-		} else if ("S10_C02".equals(statusImg)) {
-			setStatus(EventStatus.ACCEPTED);
-		} else if ("S02_C01".equals(statusImg)) {
-			setStatus(EventStatus.PROPOSED);
-		} else if ("S96_C02".equals(statusImg)) {
-			setStatus(EventStatus.INFORMATION);
-		} else if ("S34_C05".equals(statusImg)) {
-			setStatus(EventStatus.PROBLEM);
-		} else if ("S09_C05".equals(statusImg)) {
-			setStatus(EventStatus.REJECTED);
-		} else {
+		// initialize mapping
+		if (statusMapping == null) {
+			statusMapping = new Properties();
+			try {
+				statusMapping.load(UUEvent.class.getResourceAsStream(MAPPING_CONFIGURATION_FILE));
+			} catch (IOException e) {
+				log.error("Error when loading UU status mapping from file", e);
+				throw new RuntimeException("Cannot load status mapping from file", e);
+			}
+		}
+		String uuStatus = statusMapping.getProperty(statusImg);
+		if (uuStatus == null) {
 			throw new RuntimeException("Invalid status: " + statusImg);
 		}
+		setStatus(EventStatus.valueOf(uuStatus));
 	}
 	
 	public boolean isConfirmed() {
