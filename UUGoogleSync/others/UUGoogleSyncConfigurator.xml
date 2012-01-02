@@ -26,8 +26,8 @@
     <cp>lib/google-http-client-1.6.0-beta.jar</cp>
     <cp>lib/google-oauth-client-1.6.0-beta.jar</cp>
     <cp>lib/guava-r09.jar</cp>
-    <cp>lib/httpclient-4.0.3.jar</cp>
-    <cp>lib/httpcore-4.0.1.jar</cp>
+    <cp>lib/httpclient-4.1.2.jar</cp>
+    <cp>lib/httpcore-4.1.2.jar</cp>
     <cp>lib/jackson-core-asl-1.9.1.jar</cp>
     <cp>lib/log4j-1.2.16.jar</cp>
     <cp>config</cp>
