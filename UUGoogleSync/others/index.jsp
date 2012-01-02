@@ -43,7 +43,7 @@ Aplikace je k dispozici zdarma jako plně funkční alfa verze, nicméně v sou�
     Pro běh aplikace je vyžadováno JRE verze 6 nebo vyšší na MS Windows (pro ostatní platformy viz <a href="#FAQ_LINUX">FAQ</a>).
     Pokud toto JRE nemáte k dispozici, nainstalujte si ho.
   </li>
-  <li>Stáhněte si <a href="UUGoogleSync.zip">aplikační archiv</a> a rozbalte ho do libovolného adresáře (nesmí mít nikde v názvu mezeru).</li>
+  <li>Stáhněte si <a href="UUGoogleSync.zip">aplikační archiv</a> a rozbalte ho do libovolného adresáře.</li>
   <li>Spusťte aplikaci <tt>UUGoogleSyncConfigurator.exe</tt> a nakonfigurujte alespoň následující údaje
   (všechny údaje si aplikace pamatuje v konfiguračním souboru <tt>config/UUGoogleSync.properties</tt>, některé údaje se šifrují):
     <ul>
@@ -63,6 +63,14 @@ Aplikace je k dispozici zdarma jako plně funkční alfa verze, nicméně v sou�
 </ol>
 
 <h1>Historie verzí</h1>
+<h2>2012-01-04</h2>
+<ul>
+<li>ISS2 - Aplikaci je nyní možné instalovat i do adresáře s mezerou v názvu (takže si s chutí užijte Program Files).</li>
+<li>ISS3 - Správnost přihlašovacích údajů do Unicorn Universe je kontrolována již při konfiguraci.
+Navíc pokud se zjistí neplatnost přihlašovacích údajů během synchronizace, vypíše se do logu rozumné chybové hlášení.</li>
+<li>ISS4 - Entita &amp;amp; je při načítání dat z Unicorn Universe korektně přeložena na &amp;.</li>
+</ul>
+
 <h2>2012-01-01</h2>
 <ul>
 <li>Doplněno zipování komunikace s Unicorn Universe, čímž se množství stažených dat snížilo na cca 1/8.</li>
