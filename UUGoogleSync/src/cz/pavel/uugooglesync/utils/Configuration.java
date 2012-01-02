@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
@@ -51,7 +52,7 @@ public class Configuration {
 	public static void storeProperties() throws IOException {
 		URL url = Configuration.class.getResource(CONFIGURATION_FILE); 
 		log.info("Storing properties to " + url);
-		FileOutputStream fos = new FileOutputStream(url.getFile()); 
+		FileOutputStream fos = new FileOutputStream(URLDecoder.decode(url.getFile(), CHARACTER_ENCODING)); 
 		properties.store(fos, "UUGoogleSync configuration");
 		fos.close();
 	}
