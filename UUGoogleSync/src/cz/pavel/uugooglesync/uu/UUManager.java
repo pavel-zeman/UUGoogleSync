@@ -172,8 +172,8 @@ public class UUManager {
 	        	String itemData = data.substring(nextIndex, itemEndIndex);
 	        	String statusImg = HtmlParser.extractRegExp(itemData, "<img src=\".*/([^/]*).gif\"");
 	        	String id = HtmlParser.extractRegExp(itemData, "<DIV class=\"normal-diary-item[^\"]*\" id=\"dwdiary_item_([0-9]*)_[0-9]*\"");
-	        	String summary = HtmlParser.extractRegExp(itemData, "<img src=[^>]*><SPAN[^>]*>([^<]*)</SPAN");
-	        	String place = HtmlParser.extractRegExp(itemData, "<DIV class=\"normal-diary-item-place\">(.*)</DIV><DIV class=\"normal-diary-item-time\"");
+	        	String summary = HtmlParser.extractRegExp(itemData, "<img src=[^>]*><SPAN[^>]*>([^<]*)</SPAN", true);
+	        	String place = HtmlParser.extractRegExp(itemData, "<DIV class=\"normal-diary-item-place\">(.*)</DIV><DIV class=\"normal-diary-item-time\"", true);
 	        	// if the place ends with comma, remove it (this is true for most events in the UU calendar)
 	        	if (place.endsWith(",") && place.length() > 1) {
 	        		place = place.substring(0, place.length() - 1);

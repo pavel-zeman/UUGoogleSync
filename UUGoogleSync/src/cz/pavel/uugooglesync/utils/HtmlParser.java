@@ -11,13 +11,16 @@ import java.util.regex.Pattern;
 
 public class HtmlParser {
 	
+	/** Default string encoding */
+	private static final String DEFAULT_ENCODING = "UTF-8";
+	
 	/**
 	 * Cache of compiled regexp patterns.
 	 */
 	private static final Map<String, Pattern> compiledPatterns = new HashMap<String, Pattern>();
 	
 	public static String getContents(InputStream is) throws IOException {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is, DEFAULT_ENCODING));
 		StringBuilder result = new StringBuilder();
 		String line = reader.readLine();
 		while (line != null) {
@@ -28,16 +31,22 @@ public class HtmlParser {
 	}
 	
 	public static String extractRegExp(String data, String regexp) {
+		return extractRegExp(data, regexp, false);
+		
+	}
+	
+	public static String extractRegExp(String data, String regexp, boolean decode) {
 		Pattern pattern = compiledPatterns.get(regexp);
 		if (pattern == null) {
 			pattern = Pattern.compile("(?i)" + regexp);
 			compiledPatterns.put(regexp, pattern);
 		}
 		Matcher matcher = pattern.matcher(data);
-		if (matcher.find()) {
-			return matcher.group(1).trim();
+		String result = matcher.find() ? matcher.group(1).trim() : "";
+		if (decode) {
+			result = result.replace("&amp;", "&");
 		}
-		return "";
+		return result;
 	}
 
 }
