@@ -101,16 +101,29 @@ public class UUManager {
 	}
 	
 	/**
+	 * Logs in the UU using the access codes from configuration.
+	 * @return Data of the first page after login.
+	 * @throws ClientProtocolException Thrown by Apache httpclient.
+	 * @throws IOException Thrown by Apache httpclient.
+	 */
+	private String logIn() throws ClientProtocolException, IOException {
+		return logIn(
+				Configuration.getEncryptedString(Configuration.Parameters.UU_ACCESS_CODE1), 
+				Configuration.getEncryptedString(Configuration.Parameters.UU_ACCESS_CODE2)
+				);		
+	}
+	
+	/**
 	 * Logs in to Unicorn Universe.
 	 * 
 	 * @return Contents of the first HTML page after successful logon.
 	 */
-	private String logIn() throws ClientProtocolException, IOException {
+	private String logIn(String accessCode1, String accessCode2) throws ClientProtocolException, IOException {
         HttpPost httpost = new HttpPost(UIS_BASE_URL + "/ues/sesm");
         
         List <NameValuePair> nvps = new ArrayList <NameValuePair>();
-        nvps.add(new BasicNameValuePair("UES_AccessCode1", Configuration.getEncryptedString(Configuration.Parameters.UU_ACCESS_CODE1)));
-        nvps.add(new BasicNameValuePair("UES_AccessCode2", Configuration.getEncryptedString(Configuration.Parameters.UU_ACCESS_CODE2)));
+        nvps.add(new BasicNameValuePair("UES_AccessCode1", accessCode1));
+        nvps.add(new BasicNameValuePair("UES_AccessCode2", accessCode2));
         nvps.add(new BasicNameValuePair("UES_SecurityRealm", "unicornuniverse.eu"));
         nvps.add(new BasicNameValuePair("loginURL", "http://unicornuniverse.eu"));
         httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
@@ -119,7 +132,13 @@ public class UUManager {
         HttpEntity entity = response.getEntity();
         
         log.debug("Sending POST request to " + httpost.getURI());
-        return HtmlParser.getContents(entity.getContent());
+        String result = HtmlParser.getContents(entity.getContent());
+        if (result.indexOf("\"a_toolBar-system-back\"") < 0) {
+        	log.error("Invalid page after login, incorrect access code 1 or 2?");
+        	throw new RuntimeException("Probably incorrect UU access code 1 or 2");
+        }
+        
+        return result;
 	}
 	
 	/**
@@ -132,6 +151,21 @@ public class UUManager {
 	private static String getDateStringForCurrentWeek(String data) {
 		return HtmlParser.extractRegExp(data, "<SPAN class=\"diary-navigation-time-description\">[^<]*</SPAN><SPAN>, ([0-9.]*) ");
 	}
+	
+	
+	/**
+	 * Verifies, whether access codes are valid by trying to log in. Throws RuntimeException,
+	 * if they are not valid.
+	 * @param accessCode1 access code 1
+	 * @param accessCode2 access code 2
+	 * @throws ClientProtocolException Thrown by Apache httpclient
+	 * @throws IOException Thrown by Apache httpclient
+	 */
+	public void checkAccessCodes(String accessCode1, String accessCode2) throws ClientProtocolException, IOException {
+		initHttpClient();
+		logIn(accessCode1, accessCode2);
+	}
+	
 	
 	/**
 	 * Loads all events from Unicorn Universe.

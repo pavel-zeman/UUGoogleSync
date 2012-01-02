@@ -31,6 +31,7 @@ import com.google.api.client.json.jackson.JacksonFactory;
 
 import cz.pavel.uugooglesync.utils.Configuration;
 import cz.pavel.uugooglesync.utils.LogUtils;
+import cz.pavel.uugooglesync.uu.UUManager;
 
 public class UUGoogleSyncConfigurator extends JFrame implements ActionListener {
 
@@ -166,6 +167,16 @@ public class UUGoogleSyncConfigurator extends JFrame implements ActionListener {
 		Configuration.setInt(Configuration.Parameters.SYNC_INTERVAL, Integer.parseInt(syncInterval.getText()));
 		Configuration.setInt(Configuration.Parameters.SYNC_DAYS_BEFORE, Integer.parseInt(syncDaysBefore.getText()));
 		Configuration.setInt(Configuration.Parameters.SYNC_DAYS_AFTER, Integer.parseInt(syncDaysAfter.getText()));
+		
+		// check access codes
+		UUManager uuManager = new UUManager();
+		try {
+			uuManager.checkAccessCodes(uuAccessCode1.getText(), uuAccessCode2.getText());
+		} catch (Exception e) {
+			log.error("Error when checking access codes", e);
+			JOptionPane.showMessageDialog(this, "Chyba při ověřování přihlašovacích údajů do Unicorn Universe (nesprávné přihlašovací údaje?)", "Chyba", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		Configuration.setEncryptedString(Configuration.Parameters.UU_ACCESS_CODE1, uuAccessCode1.getText());
 		Configuration.setEncryptedString(Configuration.Parameters.UU_ACCESS_CODE2, uuAccessCode2.getText());
 		
