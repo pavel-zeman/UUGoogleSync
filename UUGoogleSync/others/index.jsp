@@ -62,6 +62,18 @@ Aplikace je k dispozici zdarma jako plně funkční alfa verze, nicméně v sou�
   </li>   
 </ol>
 
+<h1>Historie verzí</h1>
+<h2>2012-01-01</h2>
+<ul>
+<li>Doplněno zipování komunikace s Unicorn Universe, čímž se množství stažených dat snížilo na cca 1/8.</li>
+<li>Pokud se nepovede synchronizace, provede se další pokus již za 10 minut (v konfiguračním souboru lze případně ještě snížit). 
+Důvodem je rychlejší synchronizace po obnovení provozu počítače.</li>
+<li>Doplněno odhlášení z Unicorn Universe po načtení všech dat.</li>
+</ul>
+
+<h2>2011-12-23</h2>
+<p>První verze</p>
+
 <h1>FAQ</h1>
 <h2><a name="FAQ_REGISTRATION">Proč je nutné před použitím aplikace "registrovat" vlastní gmailovou adresu?</a></h2>
 <p>Důvody jsou následující:</p>
