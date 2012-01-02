@@ -37,7 +37,7 @@ public class UUGoogleSync {
 	private TrayIcon trayIcon; 
 	
 	private static final int MIN_SYNC_INTERVAL = 60;
-	private static final int MIN_SYNC_INTERVAL_AFTER_FAILURE = 10;
+	private static final int MIN_SYNC_INTERVAL_AFTER_FAILURE = 1;
 	private static final String DEFAULT_SYSTRAY_MESSAGE = "UUGoogleSync";
 	private static final int ONE_MINUTE_SLEEP = 60 * 1000;
 	
