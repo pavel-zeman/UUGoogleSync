@@ -24,6 +24,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
 import org.apache.log4j.Logger;
@@ -42,6 +45,11 @@ public class UUManager {
 	
 	private static final Pattern DATE_TIME_PATTERN = Pattern.compile("([0-9]*)\\.([0-9]*)\\.([0-9]*) ([0-9]*):([0-9]*) - ([0-9]*)\\.([0-9]*)\\.([0-9]*) ([0-9]*):([0-9]*)");
 	private static final Pattern TIME_PATTERN = Pattern.compile("([0-9]*):([0-9]*) - ([0-9]*):([0-9]*)");
+	
+	/** Http connection timeout (in ms) */
+	private static final int HTTP_CONNECTION_TIMEOUT = 10000;
+	/** Http socket read timeout (in ms) */
+	private static final int HTTP_SO_TIMEOUT = 10000;
 	
 	// total bytes read from server
 	private int totalBytes;
@@ -68,7 +76,12 @@ public class UUManager {
 	private void initHttpClient() {
 		// if the client was not initialized, do it now
 		if (httpClient == null) {
-			httpClient = new DefaultHttpClient();
+			// initialize client and set timeouts
+			HttpParams httpParams = new BasicHttpParams();
+			HttpConnectionParams.setConnectionTimeout(httpParams, HTTP_CONNECTION_TIMEOUT);
+			HttpConnectionParams.setSoTimeout(httpParams, HTTP_SO_TIMEOUT);
+			httpClient = new DefaultHttpClient(httpParams);
+			
 			// add support for gzip compression (request header)
 			httpClient.addRequestInterceptor(new HttpRequestInterceptor() {
 	            @Override
