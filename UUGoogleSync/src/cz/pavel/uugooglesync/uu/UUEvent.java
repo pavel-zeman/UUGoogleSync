@@ -19,7 +19,7 @@ public class UUEvent {
 	/** Logger */
 	private static final Logger log = LogUtils.getLogger();
 	
-	public enum EventStatus {ACCEPTED, INFORMATION, REJECTED, PARTICIPATED, NOT_PARTICIPATED, PROPOSED, PROBLEM};
+	public enum EventStatus {ACCEPTED, INFORMATION, REJECTED, PARTICIPATED, NOT_PARTICIPATED, PROPOSED, PROBLEM, ATTENTION};
 	
 	
 	private EventStatus status;
