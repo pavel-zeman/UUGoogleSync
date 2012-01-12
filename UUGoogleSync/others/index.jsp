@@ -63,6 +63,12 @@ Aplikace je k dispozici zdarma jako plně funkční alfa verze, nicméně v sou�
 </ol>
 
 <h1>Historie verzí</h1>
+<h2>2012-01-12</h2>
+<ul>
+<li>ISS6 - Opraveno ošetření timeoutů při komunikaci s UU, nyní by již synchronizace s UU neměla vytuhnout.</li>
+<li>ISS7 - Doplněno ošetření stavu Attention.</li>
+</ul>
+
 <h2>2012-01-04</h2>
 <ul>
 <li>ISS2 - Aplikaci je nyní možné instalovat i do adresáře s mezerou v názvu (takže si s chutí užijte Program Files).</li>
