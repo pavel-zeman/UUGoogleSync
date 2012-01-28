@@ -53,6 +53,7 @@ public class UUGoogleSyncConfigurator extends JFrame implements ActionListener {
 	private JButton okButton;
 	private JTextArea googleUrl;
 	private JTextField googleCode;
+	private JTextField googleCalendarId;
 	
 	public UUGoogleSyncConfigurator() {
 		this.setLayout(layout);
@@ -86,10 +87,16 @@ public class UUGoogleSyncConfigurator extends JFrame implements ActionListener {
 		this.add(getLabel("Kód vygenerovaný pomocí předchozího URL"), getConstraints(0, 7));
 		this.add(googleCode = getTextField(10), getConstraints(1, 7, true, 2));
 
-		this.add(getLabel(" "), getConstraints(0, 8, true, 3));
+		this.add(getLabel("ID kalendáře Google"), getConstraints(0, 8));
+		this.add(googleCalendarId = getTextField(20), getConstraints(1, 8, true, 2));
 
 		
-		this.add(okButton = getButton("OK"), getConstraints(0, 9, true, 3));
+		
+		this.add(getLabel(" "), getConstraints(0, 9, true, 3));
+		
+
+		
+		this.add(okButton = getButton("OK"), getConstraints(0, 10, true, 3));
 		
 		okButton.addActionListener(this);
 		
@@ -152,6 +159,7 @@ public class UUGoogleSyncConfigurator extends JFrame implements ActionListener {
 		syncDaysAfter.setText(String.valueOf(Configuration.getInt(Configuration.Parameters.SYNC_DAYS_AFTER)));
 		uuAccessCode1.setText(Configuration.getEncryptedString(Configuration.Parameters.UU_ACCESS_CODE1));
 		uuAccessCode2.setText(Configuration.getEncryptedString(Configuration.Parameters.UU_ACCESS_CODE2));
+		googleCalendarId.setText(Configuration.getString(Configuration.Parameters.GOOGLE_CALENDAR_ID));
 		
 
 		// generate URL for Google SSO
@@ -167,6 +175,7 @@ public class UUGoogleSyncConfigurator extends JFrame implements ActionListener {
 		Configuration.setInt(Configuration.Parameters.SYNC_INTERVAL, Integer.parseInt(syncInterval.getText()));
 		Configuration.setInt(Configuration.Parameters.SYNC_DAYS_BEFORE, Integer.parseInt(syncDaysBefore.getText()));
 		Configuration.setInt(Configuration.Parameters.SYNC_DAYS_AFTER, Integer.parseInt(syncDaysAfter.getText()));
+		Configuration.setString(Configuration.Parameters.GOOGLE_CALENDAR_ID, googleCalendarId.getText());
 		
 		// check access codes
 		UUManager uuManager = new UUManager();

@@ -35,18 +35,26 @@ public class Configuration {
 		public static final String GOOGLE_ACCESS_TOKEN = "google.accessToken";
 		public static final String GOOGLE_REFRESH_TOKEN = "google.refreshToken";
 		public static final String GOOGLE_EMAIL = "google.refreshToken";
+		public static final String GOOGLE_CALENDAR_ID = "google.calendarId";
+		
 		
 		public static final String UU_ACCESS_CODE1 = "uu.accessCode1";
 		public static final String UU_ACCESS_CODE2 = "uu.accessCode2";
+		
+		
 	}
 	
 	
 	public static void readProperties() throws IOException {
 		InputStream is = Configuration.class.getResourceAsStream(CONFIGURATION_FILE);
-		URL url = Configuration.class.getResource(CONFIGURATION_FILE); // just for logging purposes
-		properties = new Properties();
-		log.info("Loading properties from " + url);
-		properties.load(is);
+		try {
+			URL url = Configuration.class.getResource(CONFIGURATION_FILE); // just for logging purposes
+			properties = new Properties();
+			log.info("Loading properties from " + url);
+			properties.load(is);
+		} finally {
+			is.close();
+		}
 	}
 	
 	public static void storeProperties() throws IOException {

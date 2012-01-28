@@ -37,13 +37,14 @@ public class GoogleManager {
 	
 	private static final Logger log = LogUtils.getLogger();
 
-	private static final String CALENDAR = "primary";
+	private static final String DEFAULT_CALENDAR_ID = "primary";
 	private static final String UUID = "UUID";
 	
 	public static final String STATUS_CONFIRMED = "confirmed";
 	public static final String STATUS_TENTATIVE = "tentative";
 	
 	private Calendar service;
+	private String calendarId;
 	
 	private static final String VERIFICATION_SERVICE_URL = "http://kdkscarab.unicorn.cz/UUGoogleSyncChecker/Checker";
 	
@@ -65,13 +66,20 @@ public class GoogleManager {
         }
 	}
 	
+	
+	
 	public Map<String, Event> getEvents(java.util.Calendar startDate, java.util.Calendar endDate) throws IOException {
 	    HttpTransport httpTransport = new NetHttpTransport();
 	    JacksonFactory jsonFactory = new JacksonFactory();
 	    
 	    // The clientId and clientSecret are copied from the API Access tab on the Google APIs Console
 	    String clientId = Configuration.getEncryptedString(Configuration.Parameters.GOOGLE_CLIENT_ID);  
-	    String clientSecret = Configuration.getEncryptedString(Configuration.Parameters.GOOGLE_CLIENT_SECRET); 
+	    String clientSecret = Configuration.getEncryptedString(Configuration.Parameters.GOOGLE_CLIENT_SECRET);
+	    calendarId = Configuration.getString(Configuration.Parameters.GOOGLE_CALENDAR_ID, DEFAULT_CALENDAR_ID);
+	    if (calendarId.length() == 0) {
+	    	calendarId = DEFAULT_CALENDAR_ID;
+	    }
+	    
 
 	    GoogleAccessProtectedResource accessProtectedResource = new GoogleAccessProtectedResource(
 	    		Configuration.getEncryptedString(Configuration.Parameters.GOOGLE_ACCESS_TOKEN), httpTransport, jsonFactory, clientId, clientSecret,
@@ -97,13 +105,14 @@ public class GoogleManager {
 	    
 	    // get events
 	    log.debug("Loading events from " + CalendarUtils.calendarToGoogleString(startDate) + " to " + CalendarUtils.calendarToGoogleString(endDate));
-	    Calendar.Events.List eventList = service.events().list(CALENDAR); 
+	    Calendar.Events.List eventList = service.events().list(calendarId); 
 	    Events events2 = eventList.setTimeMin(CalendarUtils.calendarToGoogleString(startDate)).
 	    	setTimeMax(CalendarUtils.calendarToGoogleString(endDate)).
 	    	setMaxResults(Integer.valueOf(1000)).setOrderBy("startTime").setSingleEvents(Boolean.TRUE).execute();
 	    
 	    Map<String, Event> result = new HashMap<String, Event>();
-	    while (true) {
+	    // if there are no events, the getItems method returns null (not empty list!)
+	    while (events2.getItems() != null) {
 		    for (Event event : events2.getItems()) {
 		    	if (getId(event) != null) {
 			    	log.debug("Start: " + CalendarUtils.formatGoogleDate(event.getStart()) + " End: " + CalendarUtils.formatGoogleDate(event.getEnd()) + " Summary: " + event.getSummary());
@@ -119,21 +128,21 @@ public class GoogleManager {
 		    }
 	    }
 	    
-	    log.info("Total events: " + result.size());
+	    log.info("Total events (" + calendarId + "): " + result.size());
 	    
 	    return result;
 	}
 	
 	public void updateEvent(Event event) throws IOException {
-		service.events().update(CALENDAR, event.getId(), event).execute();
+		service.events().update(calendarId, event.getId(), event).execute();
 	}
 	
 	public void insertEvent(Event event) throws IOException {
-		service.events().insert(CALENDAR, event).execute();
+		service.events().insert(calendarId, event).execute();
 	}
 	
 	public void deleteEvent(String id) throws IOException {
-		service.events().delete(CALENDAR, id).execute();
+		service.events().delete(calendarId, id).execute();
 	}
 	
 	public void setId(Event event, String id) {
