@@ -49,6 +49,8 @@ Aplikace je k dispozici zdarma jako plně funkční alfa verze, nicméně v sou�
     <ul>
       <li>Access code 1 a access code 2 pro přihlášení do Unicorn Universe</li>
       <li>Přístup do vašeho kalendáře Google pomocí speciálního URL (detaily jsou uvedené přímo v aplikaci)</li>
+      <li>Pokud chcete schůzky synchronizovat do jiného než primárního kalendáře, vyplňte ID tohoto kalendáře
+          (ID je ve tvaru <tt>&lt;směs (téměř)náhodných znaků&gt;@group.calendar.google.com</tt> a najdete ho v nastavení kalendáře pod položkou Calendar ID)</li>
     </ul>
   </li>
   <li>
