@@ -15,7 +15,7 @@
 <h1>Základní popis</h1>
 <p>
 Aplikace UUGoogleSync automaticky přenáší schůzky plánované v Unicorn Universe do kalendáře Google (opačný směr není v současné době podporovaný).
-Pokud máte nadefinovaných více kalendářů, přenášejí se schůzky výhradně do primárního kalendáře (pokud by byl zájem o synchronizaci s jiným kalendářem, tak to lze snadno doimplementovat).
+Pokud máte nadefinovaných více kalendářů, je možné určit, do kterého kalendáře se schůzky přenáší (defaultně se použije primární kalendář).
 Z kalendáře Google je možné schůzky dále synchronizovat s <a href="http://support.google.com/calendar/bin/answer.py?hl=en&amp;answer=98563">Microsoft Outlookem</a>,
 <a href="http://support.google.com/mobile/bin/answer.py?hl=en&amp;answer=138740">chytrotelefony s iOS</a> nebo Androidem a dalšími zařízeními a aplikacemi.
 </p>
@@ -63,18 +63,44 @@ Aplikace je k dispozici zdarma jako plně funkční alfa verze, nicméně v sou�
 </ol>
 
 <h1>Historie verzí</h1>
+<h2>2012-01-29</h2>
+<ul>
+<li>
+  <a href="https://github.com/pavel-zeman/UUGoogleSync/issues/8">ISS8</a> -
+  Opravena NullPointerException při synchronizaci s prázdným kalendářem.
+</li>
+<li>
+  <a href="https://github.com/pavel-zeman/UUGoogleSync/issues/9">ISS9</a> -
+  Doplněna možnost konfigurace vlastního kalendáře.
+</li>
+</ul>
+
 <h2>2012-01-12</h2>
 <ul>
-<li>ISS6 - Opraveno ošetření timeoutů při komunikaci s UU, nyní by již synchronizace s UU neměla vytuhnout.</li>
-<li>ISS7 - Doplněno ošetření stavu Attention.</li>
+<li>
+  <a href="https://github.com/pavel-zeman/UUGoogleSync/issues/6">ISS6</a> -
+  Opraveno ošetření timeoutů při komunikaci s UU, nyní by již synchronizace s UU neměla vytuhnout.
+</li>
+<li>
+  <a href="https://github.com/pavel-zeman/UUGoogleSync/issues/7">ISS7</a> -
+  Doplněno ošetření stavu Attention.
+</li>
 </ul>
 
 <h2>2012-01-04</h2>
 <ul>
-<li>ISS2 - Aplikaci je nyní možné instalovat i do adresáře s mezerou v názvu (takže si s chutí užijte Program Files).</li>
-<li>ISS3 - Správnost přihlašovacích údajů do Unicorn Universe je kontrolována již při konfiguraci.
-Navíc pokud se zjistí neplatnost přihlašovacích údajů během synchronizace, vypíše se do logu rozumné chybové hlášení.</li>
-<li>ISS4 - Entita &amp;amp; je při načítání dat z Unicorn Universe korektně přeložena na &amp;.</li>
+<li>
+  <a href="https://github.com/pavel-zeman/UUGoogleSync/issues/2">ISS2</a> - 
+  Aplikaci je nyní možné instalovat i do adresáře s mezerou v názvu (takže si s chutí užijte Program Files).
+</li>
+<li>
+  <a href="https://github.com/pavel-zeman/UUGoogleSync/issues/3">ISS3</a> - 
+  Správnost přihlašovacích údajů do Unicorn Universe je kontrolována již při konfiguraci. Navíc pokud se zjistí neplatnost přihlašovacích údajů během synchronizace, vypíše se do logu rozumné chybové hlášení.
+</li>
+<li>
+  <a href="https://github.com/pavel-zeman/UUGoogleSync/issues/4">ISS4</a> - 
+  Entita &amp;amp; je při načítání dat z Unicorn Universe korektně přeložena na &amp;.
+</li>
 </ul>
 
 <h2>2012-01-01</h2>
