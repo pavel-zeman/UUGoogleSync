@@ -9,7 +9,12 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
+
 public class HtmlParser {
+	
+	/** Default logger */
+	private static Logger log = LogUtils.getLogger();
 	
 	/** Default string encoding */
 	private static final String DEFAULT_ENCODING = "UTF-8";
@@ -24,7 +29,11 @@ public class HtmlParser {
 		StringBuilder result = new StringBuilder();
 		String line = reader.readLine();
 		while (line != null) {
-			result.append(line);
+			// ignore empty lines
+			if (line.trim().length() > 0) {
+				result.append(line);
+				log.trace(line);
+			}
 			line = reader.readLine();
 		}
 		return result.toString();
@@ -45,6 +54,9 @@ public class HtmlParser {
 		String result = matcher.find() ? matcher.group(1).trim() : "";
 		if (decode) {
 			result = result.replace("&amp;", "&");
+		}
+		if (result == null || result.length() == 0) {
+			throw new RuntimeException("Cannot extract regular expression " + regexp);
 		}
 		return result;
 	}
