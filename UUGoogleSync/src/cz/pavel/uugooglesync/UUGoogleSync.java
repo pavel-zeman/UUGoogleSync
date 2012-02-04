@@ -61,6 +61,7 @@ public class UUGoogleSync {
 		googleEvent.setLocation(uuEvent.getPlace());
 		googleEvent.setStart(CalendarUtils.calendarToGoogle(uuEvent.getStart()));
 		googleEvent.setEnd(CalendarUtils.calendarToGoogle(uuEvent.getEnd()));
+		googleEvent.setTransparency(uuEvent.getBlocksTime() ? GoogleManager.TRANSPARENCY_OPAQUE : GoogleManager.TRANSPARENCY_TRANSPARENT);
 		googleManager.setId(googleEvent, uuEvent.getId());
 	}
 	
@@ -73,7 +74,8 @@ public class UUGoogleSync {
 		    !uuEvent.getSummary().equals(coalesce(googleEvent.getSummary())) ||
 		    !uuEvent.getPlace().equals(coalesce(googleEvent.getLocation())) ||
 		    !uuEvent.getStart().equals(CalendarUtils.googleToCalendar(googleEvent.getStart())) ||
-		    !uuEvent.getEnd().equals(CalendarUtils.googleToCalendar(googleEvent.getEnd()))) {
+		    !uuEvent.getEnd().equals(CalendarUtils.googleToCalendar(googleEvent.getEnd())) ||
+		    uuEvent.getBlocksTime() != (GoogleManager.TRANSPARENCY_OPAQUE.equals(googleEvent.getTransparency()) || googleEvent.getTransparency() == null)) {
 			// update
 			fillGoogleEvent(googleEvent, uuEvent);
 			googleManager.updateEvent(googleEvent);

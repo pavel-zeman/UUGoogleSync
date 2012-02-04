@@ -42,6 +42,8 @@ public class GoogleManager {
 	
 	public static final String STATUS_CONFIRMED = "confirmed";
 	public static final String STATUS_TENTATIVE = "tentative";
+	public static final String TRANSPARENCY_OPAQUE = "opaque";
+	public static final String TRANSPARENCY_TRANSPARENT = "transparent";
 	
 	private Calendar service;
 	private String calendarId;

@@ -6,8 +6,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
@@ -43,8 +41,6 @@ public class UUManager {
 	
 	private DefaultHttpClient httpClient;
 	
-	private static final Pattern DATE_TIME_PATTERN = Pattern.compile("([0-9]*)\\.([0-9]*)\\.([0-9]*) ([0-9]*):([0-9]*) - ([0-9]*)\\.([0-9]*)\\.([0-9]*) ([0-9]*):([0-9]*)");
-	private static final Pattern TIME_PATTERN = Pattern.compile("([0-9]*):([0-9]*) - ([0-9]*):([0-9]*)");
 	
 	/** Http connection timeout (in ms) */
 	private static final int HTTP_CONNECTION_TIMEOUT = 10000;
@@ -181,6 +177,16 @@ public class UUManager {
 	
 	
 	/**
+	 * Checks, whether the input UU event is allowed (i.e. we add it to the Google calendar).
+	 * @param uuEvent UU event to check
+	 * @return True, if it should be added to the Google calendar, false otherwise.
+	 */
+	private static boolean allowEvent(UUEvent uuEvent) {
+		return uuEvent.getStatus() != UUEvent.EventStatus.REJECTED && uuEvent.getStatus() != UUEvent.EventStatus.NOT_PARTICIPATED;
+	}
+	
+	
+	/**
 	 * Loads all events from Unicorn Universe.
 	 * 
 	 * @param startDate the first date of the interval, which to load the events for
@@ -198,13 +204,13 @@ public class UUManager {
         // go to calendar
         data = clickLink("a_toolBar-personal-calendar", data);
         // set calendar to week mode
-        data = clickLink("dwdiary-switch-week", data);
+        data = clickLink("dwdiary-normal-switch-week", data);
         
         // go back to the start date
         Calendar currentDate = CalendarUtils.stringToDate(getDateStringForCurrentWeek(data));
         while (startDate.before(currentDate)) {
 	        // go to previous week
-	        data = clickLink("dwdiary-link-previous", data);
+	        data = clickLink("dwdiary-normal-link-previous", data);
 	        currentDate = CalendarUtils.stringToDate(getDateStringForCurrentWeek(data));
         }
 
@@ -213,6 +219,33 @@ public class UUManager {
         while (!currentDate.after(endDate)) {
 	        // find items
 	        int nextIndex = 0;
+	        
+	        // first non-blocking items
+	        while ((nextIndex = data.indexOf("<DIV class=\" normal-diary-item-long", nextIndex)) >= 0) {
+	        	int itemEndIndex = data.indexOf("listeners.add", nextIndex);
+	        	String itemData = data.substring(nextIndex, itemEndIndex);
+	        	String statusImg = HtmlParser.extractRegExp(itemData, "<img src=\".*/([^/]*).gif\"");
+	        	String id = HtmlParser.extractRegExp(itemData, "<SPAN class=\"vcInLine\" id=\"dwdiary_item_([0-9]*)_[0-9]*-");
+	        	String summary = HtmlParser.extractRegExp(itemData, "<SPAN class=\"vcInLine\"[^>]*>([^<]*)</SPAN>", true);
+	        	String place = HtmlParser.extractRegExp(itemData, "<SPAN class=\"vcInLine\"[^>]*>[^<]*</SPAN>, ([^<]*)</SPAN>", true);
+	        	// extract time from place and remove it
+	        	String time = place.substring(place.length() - 35);
+	        	place = place.substring(0, place.length() - 35).trim();
+
+	        	UUEvent uuEvent = new UUEvent(id, summary + " (UU)", place, false);
+	        	uuEvent.setStatusImg(statusImg);
+	        	uuEvent.setTime(time, null);
+
+        		// we do not want rejected and "not participated" events, do not include them in the resulting map
+	        	if (allowEvent(uuEvent)) {
+	        		result.put(uuEvent.getId(), uuEvent);
+		        	log.debug(uuEvent.toString());
+	        	}
+	        	nextIndex = itemEndIndex;
+	        }
+	        
+	        // then blocking items
+	        nextIndex = 0;
 	        while ((nextIndex = data.indexOf("<DIV class=\"normal-diary-item", nextIndex)) >= 0) {
 	        	int itemEndIndex = data.indexOf("diary.addItem", nextIndex);
 	        	itemEndIndex = data.indexOf("</SCRIPT>", itemEndIndex);
@@ -227,54 +260,15 @@ public class UUManager {
 	        	}
 	        	String time = HtmlParser.extractRegExp(itemData, "<DIV class=\"normal-diary-item-time\">([^<]*)</DIV>");
 	        	String dateIndex = HtmlParser.extractRegExp(itemData, "diary.addItem\\(.*, ([0-9]*),[0-9 ]*\\)");
+	        	
+	        	UUEvent uuEvent = new UUEvent(id, summary + " (UU)", place, true);
+	        	uuEvent.setStatusImg(statusImg);
 	        	Calendar itemDate = (Calendar)currentDate.clone();
 	        	itemDate.add(Calendar.DATE, Integer.parseInt(dateIndex));
-	        	
-	        	UUEvent uuEvent = new UUEvent();
-	        	uuEvent.setId(id);
-	        	uuEvent.setPlace(place);
-	        	uuEvent.setStatusImg(statusImg);
-	        	uuEvent.setSummary(summary + " (UU)");
-	        	
-	        	if (time.indexOf(".") >= 0) {
-	        		// time contains date, it is an event spanning multiple days
-	        		Matcher matcher = DATE_TIME_PATTERN.matcher(time);
-	        		matcher.find();
-	        		Calendar start = Calendar.getInstance();
-	        		start.clear();
-	        		start.set(Integer.parseInt(matcher.group(3)), 
-	        				  Integer.parseInt(matcher.group(2)) - 1, 
-	        				  Integer.parseInt(matcher.group(1)), 
-	        				  Integer.parseInt(matcher.group(4)), 
-	        				  Integer.parseInt(matcher.group(5)));
-	        		uuEvent.setStart(start);
-	        		
-	        		Calendar end = Calendar.getInstance();
-	        		end.clear();
-	        		end.set(Integer.parseInt(matcher.group(8)), 
-	        				Integer.parseInt(matcher.group(7)) - 1, 
-	        				Integer.parseInt(matcher.group(6)), 
-	        				Integer.parseInt(matcher.group(9)), 
-	        				Integer.parseInt(matcher.group(10)));
-	        		
-	        		uuEvent.setEnd(end);
-	        	} else {
-	        		// there is no date, just parse the time
-	        		Matcher matcher = TIME_PATTERN.matcher(time);
-	        		matcher.find();
-	        		Calendar start = (Calendar)itemDate.clone();
-	        		start.set(Calendar.HOUR_OF_DAY, Integer.parseInt(matcher.group(1)));
-	        		start.set(Calendar.MINUTE, Integer.parseInt(matcher.group(2)));
-	        		uuEvent.setStart(start);
-	        		
-	        		Calendar end = (Calendar)itemDate.clone();
-	        		end.set(Calendar.HOUR_OF_DAY, Integer.parseInt(matcher.group(3)));
-	        		end.set(Calendar.MINUTE, Integer.parseInt(matcher.group(4)));
-	        		uuEvent.setEnd(end);
-	        	}
+	        	uuEvent.setTime(time, itemDate);
 	        	
 	        	// we do not want rejected and "not participated" events, do not include them in the resulting map
-	        	if (uuEvent.getStatus() != UUEvent.EventStatus.REJECTED && uuEvent.getStatus() != UUEvent.EventStatus.NOT_PARTICIPATED) {
+	        	if (allowEvent(uuEvent)) {
 	        		result.put(uuEvent.getId(), uuEvent);
 		        	log.debug(uuEvent.toString());
 	        	}
@@ -282,7 +276,7 @@ public class UUManager {
 	        }
 	        
 	        // go to next week
-	        data = clickLink("dwdiary-link-next", data);
+	        data = clickLink("dwdiary-normal-link-next", data);
 	        currentDate = CalendarUtils.stringToDate(getDateStringForCurrentWeek(data));
         }
         
