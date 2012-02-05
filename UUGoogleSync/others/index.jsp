@@ -65,6 +65,22 @@ Aplikace je k dispozici zdarma jako plně funkční alfa verze, nicméně v sou�
 </ol>
 
 <h1>Historie verzí</h1>
+<h2>2012-02-05</h2>
+<ul>
+<li>
+  <a href="https://github.com/pavel-zeman/UUGoogleSync/issues/11">ISS11</a> -
+  Doplněna synchronizace neblokujících schůzek.
+</li>
+<li>
+  <a href="https://github.com/pavel-zeman/UUGoogleSync/issues/12">ISS12</a> -
+  Snížen minimální interval pro synchronizaci na 30 minut.
+</li>
+<li>
+  <a href="https://github.com/pavel-zeman/UUGoogleSync/issues/13">ISS13</a> -
+  Aktualizováno parsování HTML na aktuální verzi UU.
+</li>
+</ul>
+
 <h2>2012-01-29</h2>
 <ul>
 <li>
@@ -133,11 +149,11 @@ Důvodem je rychlejší synchronizace po obnovení provozu počítače.</li>
 <p>Bezpečnost má v tomto případě několik aspektů:</p>
 <ol>
   <li>
-    Bezpečnost síťové komunikace - Všechna data jsou přenášena přes šifrované spojení (https), nemohou být tedy zachycena ani modifikována neoprávněnou osobou. 
+    Síťová komunikace - Všechna data jsou přenášena přes šifrované spojení (https), nemohou být tedy zachycena ani modifikována neoprávněnou osobou. 
     Jedinou výjimkou je ověření, zda vaše gmailová adresa může aplikaci používat. Pro tyto účely se šifrované spojení nepoužívá a vaše gmailová adresa je tak přenášena v čitelné podobě.
   </li>
   <li>
-    Bezpečnost konfiguračních dat - Konfigurační data (soubor <tt>config/UUGoogleSync.properties</tt>) obsahují citlivé údaje. Konkrétně jde o vaše přístupové kódy do Unicorn Universe a 
+    Konfigurační data - Konfigurační data (soubor <tt>config/UUGoogleSync.properties</tt>) obsahují citlivé údaje. Konkrétně jde o vaše přístupové kódy do Unicorn Universe a 
     tokeny pro přístup ke kalendáři Google (tyto tokeny lze použít výhradně k programovému přístupu ke kalendáři, nelze je zneužít pro přístup k žádné jiné službě Google).
     Všechna tato citlivá data jsou šifrována, nicméně šikovný Java programátor dokáže snadno zjistit šifrovací algoritmus a šifrovací klíč a data dešifrovat. Doporučuji tedy k souboru 
     <tt>config/UUGoogleSync.properties</tt> nastavit přístupová práva pouze pro vašeho uživatele.     
@@ -149,9 +165,9 @@ Důvodem je rychlejší synchronizace po obnovení provozu počítače.</li>
   </li>   
 </ol>
 
-<h2>Nastavil jsem si synchronizaci každou půlhodinu, ale data se synchronizují pouze jednou za hodinu. Proč?</h2>
+<h2>Nastavil jsem si synchronizaci každých 15 minut, ale data se synchronizují pouze jednou za půl hodiny. Proč?</h2>
 <p>
-Minimální možný interval pro synchronizaci je jedna hodina. Jakýkoliv kratší interval se ignoruje.
+Minimální možný interval pro synchronizaci je 30 minut. Jakýkoliv kratší interval se ignoruje.
 Důvodem je výše uvedené omezení na počet volání Google API a minimalizace zátěže na Unicorn Universe.
 </p>
 
@@ -163,8 +179,22 @@ což považuji za relativně velké bezpečnostní riziko. Proto o této variant
 <p>
 Aplikace je implementovaná v Javě SE a měla by tedy fungovat pod libovolným operačním systémem, pro který je k dispozici JRE verze 6 nebo vyšší.
 Pro spuštění aplikace pod jiným operačním systémem než MS Windows nelze samozřejmě použít dodávané EXE soubory, ale je nutné použít přímo JRE a aplikační JARy.
-Pro konkrétní detaily mě kontaktujte.
+Aplikace se potom spouští následujícím způsobem (jde o jediný příkaz, který je potřeba napsat na jeden řádek, nebo rozdělit podle pravidel používaného prostředí):
 </p>
+<p>
+<tt>java -cp lib/commons-logging-1.1.1.jar;lib/google-api-client-1.6.0-beta.jar;lib/google-api-services-calendar-v3-1.3.1-beta.jar;lib/google-collections-1.0.jar;lib/google-http-client-1.6.0-beta.jar;lib/google-oauth-client-1.6.0-beta.jar;lib/guava-r09.jar;lib/httpclient-4.1.2.jar;lib/httpcore-4.1.2.jar;lib/jackson-core-asl-1.9.1.jar;lib/log4j-1.2.16.jar;config;lib/UUGoogleSync.jar -Xmx16m -Xms16m cz.pavel.uugooglesync.UUGoogleSync</tt>
+</p>
+<p>Pro korektní fungování uvedeného příkazu je potřeba dodržet následující:</p>
+<ul>
+<li>Všechny uvedené cesty jsou relativní. Příkaz je tedy potřeba spouštět z adresáře, kde je nainstalovaná aplikace UUGoogleSync.</li>
+<li>
+  Jako oddělovač jednotlivých JARů je použit znak ; (středník). Na některých operačních systémech (např. Linux) je nutné tento znak nahradit za : (dvojtečka).
+  Pokud nevíte, která varianta je správná, vyzkoušejte obě, některá bude fungovat.
+</li>
+<li>Aplikace je spuštěna se 16 MB Javovského heapu. To je postačující pro 32-bitovou Javu. Pro 64-bitovou Javu může být nutné tento limit navýšit.</li>
+</ul>
+<p>Konfigurační aplikace se spouští analogicky. Pouze je potřeba na konci příkazu nahradit třídu <tt>UUGoogleSync</tt> za <tt>UUGoogleSyncConfigurator</tt>.</p>
+
 
 <h2>Proč má taková kravina více než 3 MB?</h2>
 <p>Samotná aplikace má méně než 50 KB. Zbytek jsou zejména knihovny Google API. Zkuste se tedy zeptat u Googlu.</p>
