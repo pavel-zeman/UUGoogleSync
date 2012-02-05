@@ -1,6 +1,7 @@
 package cz.pavel.uugooglesync;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -172,50 +173,55 @@ public class UUGoogleSyncConfigurator extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		Configuration.setInt(Configuration.Parameters.SYNC_INTERVAL, Integer.parseInt(syncInterval.getText()));
-		Configuration.setInt(Configuration.Parameters.SYNC_DAYS_BEFORE, Integer.parseInt(syncDaysBefore.getText()));
-		Configuration.setInt(Configuration.Parameters.SYNC_DAYS_AFTER, Integer.parseInt(syncDaysAfter.getText()));
-		Configuration.setString(Configuration.Parameters.GOOGLE_CALENDAR_ID, googleCalendarId.getText());
-		
-		// check access codes
-		UUManager uuManager = new UUManager();
 		try {
-			uuManager.checkAccessCodes(uuAccessCode1.getText(), uuAccessCode2.getText());
-		} catch (Exception e) {
-			log.error("Error when checking access codes", e);
-			JOptionPane.showMessageDialog(this, "Chyba při ověřování přihlašovacích údajů do Unicorn Universe (nesprávné přihlašovací údaje?)", "Chyba", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-		Configuration.setEncryptedString(Configuration.Parameters.UU_ACCESS_CODE1, uuAccessCode1.getText());
-		Configuration.setEncryptedString(Configuration.Parameters.UU_ACCESS_CODE2, uuAccessCode2.getText());
-		
-		if (googleCode.getText().length() > 0) {
-			// generate tokens
-		    HttpTransport httpTransport = new NetHttpTransport();
-		    JacksonFactory jsonFactory = new JacksonFactory();
-		    String clientId = Configuration.getEncryptedString(Configuration.Parameters.GOOGLE_CLIENT_ID);
-		    String clientSecret = Configuration.getEncryptedString(Configuration.Parameters.GOOGLE_CLIENT_SECRET);
-
+			setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+			Configuration.setInt(Configuration.Parameters.SYNC_INTERVAL, Integer.parseInt(syncInterval.getText()));
+			Configuration.setInt(Configuration.Parameters.SYNC_DAYS_BEFORE, Integer.parseInt(syncDaysBefore.getText()));
+			Configuration.setInt(Configuration.Parameters.SYNC_DAYS_AFTER, Integer.parseInt(syncDaysAfter.getText()));
+			Configuration.setString(Configuration.Parameters.GOOGLE_CALENDAR_ID, googleCalendarId.getText());
+			
+			// check access codes
+			UUManager uuManager = new UUManager();
 			try {
-				AccessTokenResponse response = new GoogleAuthorizationCodeGrant(httpTransport, jsonFactory, clientId, clientSecret, googleCode.getText(), GOOGLE_REDIRECT_URL).execute();
-				Configuration.setEncryptedString(Configuration.Parameters.GOOGLE_ACCESS_TOKEN, response.accessToken);
-				Configuration.setEncryptedString(Configuration.Parameters.GOOGLE_REFRESH_TOKEN, response.refreshToken);
-			} catch (IOException e) {
-				log.error("Error when generating google token", e);
-				JOptionPane.showMessageDialog(this, "Chyba při generování Google tokenů", "Chyba", JOptionPane.ERROR_MESSAGE);
+				uuManager.checkAccessCodes(uuAccessCode1.getText(), uuAccessCode2.getText());
+			} catch (Exception e) {
+				log.error("Error when checking access codes", e);
+				JOptionPane.showMessageDialog(this, "Chyba při ověřování přihlašovacích údajů do Unicorn Universe (nesprávné přihlašovací údaje?)", "Chyba", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
+			Configuration.setEncryptedString(Configuration.Parameters.UU_ACCESS_CODE1, uuAccessCode1.getText());
+			Configuration.setEncryptedString(Configuration.Parameters.UU_ACCESS_CODE2, uuAccessCode2.getText());
+			
+			if (googleCode.getText().length() > 0) {
+				// generate tokens
+			    HttpTransport httpTransport = new NetHttpTransport();
+			    JacksonFactory jsonFactory = new JacksonFactory();
+			    String clientId = Configuration.getEncryptedString(Configuration.Parameters.GOOGLE_CLIENT_ID);
+			    String clientSecret = Configuration.getEncryptedString(Configuration.Parameters.GOOGLE_CLIENT_SECRET);
+	
+				try {
+					AccessTokenResponse response = new GoogleAuthorizationCodeGrant(httpTransport, jsonFactory, clientId, clientSecret, googleCode.getText(), GOOGLE_REDIRECT_URL).execute();
+					Configuration.setEncryptedString(Configuration.Parameters.GOOGLE_ACCESS_TOKEN, response.accessToken);
+					Configuration.setEncryptedString(Configuration.Parameters.GOOGLE_REFRESH_TOKEN, response.refreshToken);
+				} catch (IOException e) {
+					log.error("Error when generating google token", e);
+					JOptionPane.showMessageDialog(this, "Chyba při generování Google tokenů", "Chyba", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+			}
+			
+			try {
+				Configuration.storeProperties();
+			} catch (IOException ioe) {
+				log.error("Error writing properties to file", ioe);
+				JOptionPane.showMessageDialog(this, "Chyba při aktualizaci konfigurace", "Chyba", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			WindowEvent windowClosing = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
+			this.dispatchEvent(windowClosing);
+		} finally {
+			this.setCursor(Cursor.getDefaultCursor());
 		}
-		
-		try {
-			Configuration.storeProperties();
-		} catch (IOException ioe) {
-			log.error("Error writing properties to file", ioe);
-			JOptionPane.showMessageDialog(this, "Chyba při aktualizaci konfigurace", "Chyba", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-		WindowEvent windowClosing = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
-		this.dispatchEvent(windowClosing);
 	}
 
 
