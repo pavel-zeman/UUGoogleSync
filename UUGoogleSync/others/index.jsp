@@ -43,7 +43,7 @@ Aplikace je k dispozici zdarma jako plně funkční alfa verze, nicméně v sou�
     Pro běh aplikace je vyžadováno JRE verze 6 nebo vyšší na MS Windows (pro ostatní platformy viz <a href="#FAQ_LINUX">FAQ</a>).
     Pokud toto JRE nemáte k dispozici, nainstalujte si ho.
   </li>
-  <li>Stáhněte si <a href="UUGoogleSync.zip">aplikační archiv</a> a rozbalte ho do libovolného adresáře.</li>
+  <li>Stáhněte si <a href="UUGoogleSync.zip?2012-02-06">aplikační archiv</a> a rozbalte ho do libovolného adresáře.</li>
   <li>Spusťte aplikaci <tt>UUGoogleSyncConfigurator.exe</tt> a nakonfigurujte alespoň následující údaje
   (všechny údaje si aplikace pamatuje v konfiguračním souboru <tt>config/UUGoogleSync.properties</tt>, některé údaje se šifrují):
     <ul>
@@ -65,6 +65,14 @@ Aplikace je k dispozici zdarma jako plně funkční alfa verze, nicméně v sou�
 </ol>
 
 <h1>Historie verzí</h1>
+<h2>2012-02-06</h2>
+<ul>
+<li>
+  <a href="https://github.com/pavel-zeman/UUGoogleSync/issues/14">ISS14</a> -
+  Opravena synchronizace schůzek, které nemají definované žádné místo.
+</li>
+</ul>
+
 <h2>2012-02-05</h2>
 <ul>
 <li>
