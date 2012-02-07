@@ -17,7 +17,8 @@
 Aplikace UUGoogleSync automaticky přenáší schůzky plánované v Unicorn Universe do kalendáře Google (opačný směr není v současné době podporovaný).
 Pokud máte nadefinovaných více kalendářů, je možné určit, do kterého kalendáře se schůzky přenáší (defaultně se použije primární kalendář).
 Z kalendáře Google je možné schůzky dále synchronizovat s <a href="http://support.google.com/calendar/bin/answer.py?hl=en&amp;answer=98563">Microsoft Outlookem</a>,
-<a href="http://support.google.com/mobile/bin/answer.py?hl=en&amp;answer=138740">chytrotelefony s iOS</a> nebo Androidem a dalšími zařízeními a aplikacemi.
+<a href="http://support.google.com/mobile/bin/answer.py?hl=en&amp;answer=138740">chytrotelefony s iOS</a>,
+<a href="http://support.google.com/mobile/bin/answer.py?hl=en&answer=147951">Symbianem</a> nebo Androidem a dalšími zařízeními a aplikacemi.
 </p>
 
 <p>
@@ -43,7 +44,7 @@ Aplikace je k dispozici zdarma jako plně funkční alfa verze, nicméně v sou�
     Pro běh aplikace je vyžadováno JRE verze 6 nebo vyšší na MS Windows (pro ostatní platformy viz <a href="#FAQ_LINUX">FAQ</a>).
     Pokud toto JRE nemáte k dispozici, nainstalujte si ho.
   </li>
-  <li>Stáhněte si <a href="UUGoogleSync.zip?2012-02-06">aplikační archiv</a> a rozbalte ho do libovolného adresáře.</li>
+  <li>Stáhněte si <a href="UUGoogleSync.zip?2012-02-07">aplikační archiv</a> a rozbalte ho do libovolného adresáře.</li>
   <li>Spusťte aplikaci <tt>UUGoogleSyncConfigurator.exe</tt> a nakonfigurujte alespoň následující údaje
   (všechny údaje si aplikace pamatuje v konfiguračním souboru <tt>config/UUGoogleSync.properties</tt>, některé údaje se šifrují):
     <ul>
@@ -65,6 +66,14 @@ Aplikace je k dispozici zdarma jako plně funkční alfa verze, nicméně v sou�
 </ol>
 
 <h1>Historie verzí</h1>
+<h2>2012-02-07</h2>
+<ul>
+<li>
+  <a href="https://github.com/pavel-zeman/UUGoogleSync/issues/15">ISS15</a> -
+  Opravena synchronizace neblokujících nových schůzek.
+</li>
+</ul>
+
 <h2>2012-02-06</h2>
 <ul>
 <li>
