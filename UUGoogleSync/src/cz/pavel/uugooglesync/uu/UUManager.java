@@ -225,9 +225,9 @@ public class UUManager {
 	        	int itemEndIndex = data.indexOf("listeners.add", nextIndex);
 	        	String itemData = data.substring(nextIndex, itemEndIndex);
 	        	String statusImg = HtmlParser.extractRegExp(itemData, "<img src=\".*/([^/]*).gif\"");
-	        	String id = HtmlParser.extractRegExp(itemData, "<SPAN class=\"vcInLine\" id=\"dwdiary_item_([0-9]*)_[0-9]*-");
-	        	String summary = HtmlParser.extractRegExp(itemData, "<SPAN class=\"vcInLine\"[^>]*>([^<]*)</SPAN>", true);
-	        	String place = HtmlParser.extractRegExp(itemData, "<SPAN class=\"vcInLine\"[^>]*>[^<]*</SPAN>, ([^<]*)</SPAN>", true);
+	        	String id = HtmlParser.extractRegExp(itemData, "<SPAN class=\"[a-zIL-]*\" id=\"dwdiary_item_([0-9]*)_[0-9]*-");
+	        	String summary = HtmlParser.extractRegExp(itemData, "<SPAN class=\"[a-zIL-]*\" id=\"dwdiary_item_[^>]*>([^<]*)</SPAN>", true);
+	        	String place = HtmlParser.extractRegExp(itemData, "<SPAN class=\"[a-zIL-]*\" id=\"dwdiary_item_[^>]*>[^<]*</SPAN>, ([^<]*)</SPAN>", true);
 	        	// extract time from place and remove it
 	        	String time = place.substring(place.length() - 35);
 	        	place = place.substring(0, place.length() - 35).trim();
