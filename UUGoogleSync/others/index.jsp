@@ -44,7 +44,7 @@ Aplikace je k dispozici zdarma jako plně funkční alfa verze, nicméně v sou�
     Pro běh aplikace je vyžadováno JRE verze 6 nebo vyšší na MS Windows (pro ostatní platformy viz <a href="#FAQ_LINUX">FAQ</a>).
     Pokud toto JRE nemáte k dispozici, nainstalujte si ho.
   </li>
-  <li>Stáhněte si <a href="UUGoogleSync.zip?2012-02-07">aplikační archiv</a> a rozbalte ho do libovolného adresáře.</li>
+  <li>Stáhněte si <a href="UUGoogleSync.zip?2012-02-25">aplikační archiv</a> a rozbalte ho do libovolného adresáře.</li>
   <li>Spusťte aplikaci <tt>UUGoogleSyncConfigurator.exe</tt> a nakonfigurujte alespoň následující údaje
   (všechny údaje si aplikace pamatuje v konfiguračním souboru <tt>config/UUGoogleSync.properties</tt>, některé údaje se šifrují):
     <ul>
@@ -66,6 +66,14 @@ Aplikace je k dispozici zdarma jako plně funkční alfa verze, nicméně v sou�
 </ol>
 
 <h1>Historie verzí</h1>
+<h2>2012-02-25</h2>
+<ul>
+<li>
+  <a href="https://github.com/pavel-zeman/UUGoogleSync/issues/16">ISS16</a> -
+  Doplněn argument Javy, který zajistí automatické použití systémové proxy. Pro korektní fungování je nutné použít Oracle/Sun JRE.
+</li>
+</ul>
+
 <h2>2012-02-07</h2>
 <ul>
 <li>
@@ -223,7 +231,7 @@ Pokud ani potom aplikace nefunguje, zkuste zkontrolovat aplikační log (<tt>log
 </p>
 
 <h2>Přišel jsem o schůzky, které jsem měl v kalendáři Google před spuštěním synchronizace</h2>
-<p>Aplikace je v alfa verzi a používáte ji na vlastní riziko, takže sorry (ale já ji používám už cca týden a zatím je to bez problémů).</p>
+<p>Aplikace je v alfa verzi a používáte ji na vlastní riziko, takže sorry (ale já ji používám už delší dobu a zatím je to bez problémů).</p>
 
 <h2>Proč je ta ikona v systray tak hnusná?</h2>
 <p>
