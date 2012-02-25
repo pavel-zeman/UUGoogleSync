@@ -39,5 +39,6 @@
     <jdkPreference>preferJre</jdkPreference>
     <initialHeapSize>16</initialHeapSize>
     <maxHeapSize>16</maxHeapSize>
+    <opt>-Djava.net.useSystemProxies=true</opt>
   </jre>
 </launch4jConfig>
