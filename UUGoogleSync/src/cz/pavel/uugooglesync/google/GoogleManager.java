@@ -9,7 +9,6 @@ import java.util.Map;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -31,6 +30,7 @@ import com.google.api.services.calendar.model.Events;
 import cz.pavel.uugooglesync.utils.CalendarUtils;
 import cz.pavel.uugooglesync.utils.Configuration;
 import cz.pavel.uugooglesync.utils.HtmlParser;
+import cz.pavel.uugooglesync.utils.HttpClientUtils;
 import cz.pavel.uugooglesync.utils.LogUtils;
 
 public class GoogleManager {
@@ -53,7 +53,7 @@ public class GoogleManager {
 	private void verifyUserId(String userId) throws IOException {
 		log.info("Verifying user " + userId);
 		
-		HttpClient httpclient = new DefaultHttpClient();
+		DefaultHttpClient httpclient = HttpClientUtils.getHttpClient();
         HttpPost httpost = new HttpPost(VERIFICATION_SERVICE_URL);
         
         List <NameValuePair> nvps = new ArrayList <NameValuePair>();

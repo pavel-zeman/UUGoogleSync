@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.io.IOException;
+import java.net.ProxySelector;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,6 +22,7 @@ import com.google.api.services.calendar.model.Event;
 import cz.pavel.uugooglesync.google.GoogleManager;
 import cz.pavel.uugooglesync.utils.CalendarUtils;
 import cz.pavel.uugooglesync.utils.Configuration;
+import cz.pavel.uugooglesync.utils.CustomProxySelector;
 import cz.pavel.uugooglesync.utils.LogUtils;
 import cz.pavel.uugooglesync.uu.UUEvent;
 import cz.pavel.uugooglesync.uu.UUManager;
@@ -160,6 +162,8 @@ public class UUGoogleSync {
 	}
 	
 	public void synchronize() throws ClientProtocolException, IOException, AWTException {
+		// set default proxy
+		ProxySelector.setDefault(new CustomProxySelector(ProxySelector.getDefault()));
 		Configuration.readProperties();
 		int syncInterval = Configuration.getInt(Configuration.Parameters.SYNC_INTERVAL, MIN_SYNC_INTERVAL);
 		if (syncInterval < MIN_SYNC_INTERVAL) {
@@ -215,11 +219,7 @@ public class UUGoogleSync {
 		}
 	}
 	
-	/**
-	 * @param args
-	 * @throws IOException 
-	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args)  {
 		try {
 			new UUGoogleSync().synchronize();
 		} catch (Exception e) {
