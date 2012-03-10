@@ -228,7 +228,12 @@ public class UUGoogleSyncConfigurator extends JFrame implements ActionListener {
 	
 	
 	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, IOException {
-		UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+			// exception means, that the specified L&F cannot be set, so it is safe to ignore it
+		}
+		
 		UUGoogleSyncConfigurator configurator = new UUGoogleSyncConfigurator();
 		configurator.setData();
 		configurator.setVisible(true);
