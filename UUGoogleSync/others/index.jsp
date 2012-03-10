@@ -44,7 +44,7 @@ Aplikace je k dispozici zdarma jako plně funkční alfa verze, nicméně v sou�
     Pro běh aplikace je vyžadováno JRE verze 6 nebo vyšší na MS Windows (pro ostatní platformy viz <a href="#FAQ_LINUX">FAQ</a>).
     Pokud toto JRE nemáte k dispozici, nainstalujte si ho.
   </li>
-  <li>Stáhněte si <a href="UUGoogleSync.zip?2012-02-26">aplikační archiv</a> a rozbalte ho do libovolného adresáře.</li>
+  <li>Stáhněte si <a href="UUGoogleSync.zip?2012-03-10">aplikační archiv</a> a rozbalte ho do libovolného adresáře.</li>
   <li>Spusťte aplikaci <tt>UUGoogleSyncConfigurator.exe</tt> a nakonfigurujte alespoň následující údaje
   (všechny údaje si aplikace pamatuje v konfiguračním souboru <tt>config/UUGoogleSync.properties</tt>, některé údaje se šifrují):
     <ul>
@@ -66,6 +66,15 @@ Aplikace je k dispozici zdarma jako plně funkční alfa verze, nicméně v sou�
 </ol>
 
 <h1>Historie verzí</h1>
+<h2>2012-03-10</h2>
+<ul>
+<li>
+  <a href="https://github.com/pavel-zeman/UUGoogleSync/issues/17">ISS17</a> -
+  Upraveno nastavování look &amp; feel pro konfigurační aplikaci.
+  Chyba při nastavení look &amp; feel se ignoruje.
+</li>
+</ul>
+
 <h2>2012-02-26</h2>
 <ul>
 <li>
@@ -207,16 +216,15 @@ Pro spuštění aplikace pod jiným operačním systémem než MS Windows nelze 
 Aplikace se potom spouští následujícím způsobem (jde o jediný příkaz, který je potřeba napsat na jeden řádek, nebo rozdělit podle pravidel používaného prostředí):
 </p>
 <p>
-<tt>java -cp lib/commons-logging-1.1.1.jar;lib/google-api-client-1.6.0-beta.jar;lib/google-api-services-calendar-v3-1.3.1-beta.jar;lib/google-collections-1.0.jar;lib/google-http-client-1.6.0-beta.jar;lib/google-oauth-client-1.6.0-beta.jar;lib/guava-r09.jar;lib/httpclient-4.1.2.jar;lib/httpcore-4.1.2.jar;lib/jackson-core-asl-1.9.1.jar;lib/log4j-1.2.16.jar;config;lib/UUGoogleSync.jar -Xmx16m -Xms16m cz.pavel.uugooglesync.UUGoogleSync</tt>
+<tt>java -cp lib/commons-logging-1.1.1.jar:lib/google-api-client-1.6.0-beta.jar:lib/google-api-services-calendar-v3-1.3.1-beta.jar:lib/google-collections-1.0.jar:lib/google-http-client-1.6.0-beta.jar:lib/google-oauth-client-1.6.0-beta.jar:lib/guava-r09.jar:lib/httpclient-4.1.2.jar:lib/httpcore-4.1.2.jar:lib/jackson-core-asl-1.9.1.jar:lib/log4j-1.2.16.jar:config:lib/UUGoogleSync.jar -Xmx32m -Xms32m cz.pavel.uugooglesync.UUGoogleSync</tt>
 </p>
 <p>Pro korektní fungování uvedeného příkazu je potřeba dodržet následující:</p>
 <ul>
 <li>Všechny uvedené cesty jsou relativní. Příkaz je tedy potřeba spouštět z adresáře, kde je nainstalovaná aplikace UUGoogleSync.</li>
 <li>
-  Jako oddělovač jednotlivých JARů je použit znak ; (středník). Na některých operačních systémech (např. Linux) je nutné tento znak nahradit za : (dvojtečka).
-  Pokud nevíte, která varianta je správná, vyzkoušejte obě, některá bude fungovat.
+  Aplikace je spuštěna se 32 MB Javovského heapu, což by mělo obecně stačit.
+  Pokud se objeví nějaká chybová hláška o heapu, zkuste heap zvýšit (jde o parametry -Xmx a -Xms).
 </li>
-<li>Aplikace je spuštěna se 16 MB Javovského heapu. To je postačující pro 32-bitovou Javu. Pro 64-bitovou Javu může být nutné tento limit navýšit.</li>
 </ul>
 <p>Konfigurační aplikace se spouští analogicky. Pouze je potřeba na konci příkazu nahradit třídu <tt>UUGoogleSync</tt> za <tt>UUGoogleSyncConfigurator</tt>.</p>
 
@@ -233,7 +241,7 @@ Pokud ani potom aplikace nefunguje, zkuste zkontrolovat aplikační log (<tt>log
 <h2>Přišel jsem o schůzky, které jsem měl v kalendáři Google před spuštěním synchronizace</h2>
 <p>Aplikace je v alfa verzi a používáte ji na vlastní riziko, takže sorry (ale já ji používám už delší dobu a zatím je to bez problémů).</p>
 
-<h2>Proč je ta ikona v systray tak hnusná?</h2>
+<h2>Proč je ta ikona v systray tak ošklivá?</h2>
 <p>
 Bohužel jde o <a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6453521">problém Javy</a> (Sun/Oracle na něj kašle již více než 5 let!), 
 která pro ikony v systray nepodporuje korektně průhlednost. Ikona je potom ošklivě zubatá.
