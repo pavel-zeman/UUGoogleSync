@@ -235,7 +235,19 @@ public class UUManager {
 	        
 	        // then blocking items
 	        nextIndex = 0;
-	        while ((nextIndex = data.indexOf("<DIV class=\"normal-diary-item", nextIndex)) >= 0) {
+	        final String START_OF_ITEM = "<DIV class=\"normal-diary-item";
+	        while ((nextIndex = data.indexOf(START_OF_ITEM, nextIndex)) >= 0) {
+	        	// the first character after START_OF_ITEM must be space of quotation mark
+	        	char firstAfterStart = data.charAt(nextIndex + START_OF_ITEM.length());
+	        	if (firstAfterStart != '"' && firstAfterStart != ' ') {
+	        		int itemEndIndex = data.indexOf("</SCRIPT>", nextIndex);
+	        		if (itemEndIndex < 0) {
+	        			break;
+	        		}
+	        		nextIndex = itemEndIndex;
+	        		continue;
+	        	}
+	        	
 	        	int itemEndIndex = data.indexOf("diary.addItem", nextIndex);
 	        	itemEndIndex = data.indexOf("</SCRIPT>", itemEndIndex);
 	        	String itemData = data.substring(nextIndex, itemEndIndex);
