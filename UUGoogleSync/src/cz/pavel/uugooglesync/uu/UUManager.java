@@ -282,6 +282,7 @@ public class UUManager {
         }
         
         // logout
+        data = doGet(HtmlParser.extractRegExp(data, "UES.deferredNew[(][{]className:'ues.core.webui.Dialog'.*href:'([^']*)'"));
         data = doGet(HtmlParser.extractRegExp(data, "<LI id=\"li_menubar-system-logout\"><a href=\"([^\"]*)\""));
         
         log.info("Total KBs read: " + (totalBytes / 1024));
