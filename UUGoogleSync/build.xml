@@ -20,7 +20,7 @@
 	<!-- compile all classes -->
 	<target name="compile">
 		<mkdir dir="${build.directory}/classes"/>
-	    <javac srcdir="${source.directory}" destdir="${build.directory}/classes" encoding="UTF-8" fork="true" debug="true">
+	    <javac srcdir="${source.directory}" destdir="${build.directory}/classes" encoding="UTF-8" fork="true" debug="true" target="1.6">
 	    	<classpath>
 	    		<fileset dir="lib">
 	    			<include name="*.jar"/>
