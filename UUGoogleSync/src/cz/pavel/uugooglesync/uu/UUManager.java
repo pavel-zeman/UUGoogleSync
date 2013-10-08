@@ -131,7 +131,7 @@ public class UUManager {
         
         log.debug("Sending POST request to " + httpost.getURI());
         String result = HtmlParser.getContents(entity.getContent());
-        if (result.indexOf("\"a_toolBar-system-back\"") < 0) {
+        if (result.indexOf("UNI Portal Page") < 0) {
         	log.error("Invalid page after login, incorrect access code 1 or 2?");
         	throw new RuntimeException("Probably incorrect UU access code 1 or 2");
         }
@@ -191,7 +191,7 @@ public class UUManager {
 		String data = logIn();
         
         // go to calendar
-        data = clickLink("a_toolBar-personal-calendar", data);
+        data = clickLink("static-link-personal-calendar", data);
         // set calendar to week mode
         data = clickLink("dwdiary-normal-switch-week", data);
         
@@ -282,7 +282,6 @@ public class UUManager {
         }
         
         // logout
-        data = doGet(HtmlParser.extractRegExp(data, "UES.deferredNew[(][{]className:'ues.core.webui.Dialog'.*href:'([^']*)'"));
         data = doGet(HtmlParser.extractRegExp(data, "<LI id=\"li_menubar-system-logout\"><a href=\"([^\"]*)\""));
         
         log.info("Total KBs read: " + (totalBytes / 1024));
