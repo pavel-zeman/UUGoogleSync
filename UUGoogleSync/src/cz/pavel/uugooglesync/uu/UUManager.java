@@ -123,6 +123,7 @@ public class UUManager {
         nvps.add(new BasicNameValuePair("UES_AccessCode1", accessCode1));
         nvps.add(new BasicNameValuePair("UES_AccessCode2", accessCode2));
         nvps.add(new BasicNameValuePair("UES_SecurityRealm", "unicornuniverse.eu"));
+        nvps.add(new BasicNameValuePair("UES_Gate", "ues:UNI-BT:UNI-BT"));
         nvps.add(new BasicNameValuePair("loginURL", "http://unicornuniverse.eu"));
         httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
         
