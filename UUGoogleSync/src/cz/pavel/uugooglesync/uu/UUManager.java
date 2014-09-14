@@ -283,7 +283,7 @@ public class UUManager {
         }
         
         // logout
-        data = doGet(HtmlParser.extractRegExp(data, "<LI id=\"li_menubar-system-logout\"><a href=\"([^\"]*)\""));
+        data = doGet(HtmlParser.extractRegExp(data, "href:\"([^\"]*)\",icon:UES.Util.getRealImagePath\\(\"/images/touchicons/RED/TI_LOGOUT_RED.png\""));
         
         log.info("Total KBs read: " + (totalBytes / 1024));
         log.info("Total events: " + result.size());
