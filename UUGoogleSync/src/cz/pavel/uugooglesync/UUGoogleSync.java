@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.ProxySelector;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,8 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.log4j.Logger;
 
 import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.EventReminder;
+import com.google.api.services.calendar.model.EventReminders;
 
 import cz.pavel.uugooglesync.google.GoogleManager;
 import cz.pavel.uugooglesync.utils.CalendarUtils;
@@ -64,6 +67,15 @@ public class UUGoogleSync {
 		googleEvent.setStart(CalendarUtils.calendarToGoogle(uuEvent.getStart()));
 		googleEvent.setEnd(CalendarUtils.calendarToGoogle(uuEvent.getEnd()));
 		googleEvent.setTransparency(uuEvent.getBlocksTime() ? GoogleManager.TRANSPARENCY_OPAQUE : GoogleManager.TRANSPARENCY_TRANSPARENT);
+		
+		EventReminders reminders = new EventReminders();
+		reminders.setUseDefault(false);
+		
+		EventReminder reminder = new EventReminder();
+		reminder.setMinutes(120);
+		reminder.setMethod("popup");
+		reminders.setOverrides(Arrays.asList(reminder));
+		googleEvent.setReminders(reminders);
 		googleManager.setId(googleEvent, uuEvent.getId());
 	}
 	
