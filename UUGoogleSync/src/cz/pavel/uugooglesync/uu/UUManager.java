@@ -35,7 +35,7 @@ import cz.pavel.uugooglesync.utils.LogUtils;
 public class UUManager {
 	
 	private static Logger log = LogUtils.getLogger();
-	private static final String UIS_BASE_URL = "https://uu.unicornuniverse.eu";
+	private static final String UIS_BASE_URL = "https://plus4u.net";
 	
 	private DefaultHttpClient httpClient;
 	
@@ -132,7 +132,7 @@ public class UUManager {
         
         log.debug("Sending POST request to " + httpost.getURI());
         String result = HtmlParser.getContents(entity.getContent());
-        if (result.indexOf("UNI Portal Page") < 0) {
+        if (result.indexOf("Novinky") < 0) {
         	log.error("Invalid page after login, incorrect access code 1 or 2?");
         	throw new RuntimeException("Probably incorrect UU access code 1 or 2");
         }
@@ -283,7 +283,8 @@ public class UUManager {
         }
         
         // logout
-        data = doGet(HtmlParser.extractRegExp(data, "href:\"([^\"]*)\",icon:\"ues:OT-BT:UU.OS/IMAGES:ICON/LOGOUT"));
+        // TODO There is a redirect to unicorn.com, which does not work as of now
+        // data = doGet(HtmlParser.extractRegExp(data, "href:\"([^\"]*)\",icon:\"ues:OT-BT:UU.OS/IMAGES:ICON/LOGOUT"));
         
         log.info("Total KBs read: " + (totalBytes / 1024));
         log.info("Total events: " + result.size());
