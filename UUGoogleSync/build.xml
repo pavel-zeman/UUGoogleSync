@@ -1,6 +1,6 @@
 <project name="UUGoogleSync" default="build">
 	
-	<property name="launch4j.dir" location="c:/software/Launch4j" />
+	<property name="launch4j.dir" location="d:/software/Launch4j" />
 	<property name="build.directory"      value="build"/>
 	<property name="source.directory"     value="src"/>
 	<property name="application.directory"     value="${build.directory}/application"/>
