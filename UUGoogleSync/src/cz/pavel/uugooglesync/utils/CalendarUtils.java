@@ -90,7 +90,7 @@ public class CalendarUtils {
 	
 	public static Calendar googleToCalendar(EventDateTime input) {
 		long time = input.getDateTime().getValue();
-		Calendar result = Calendar.getInstance(TIME_ZONE);
+		Calendar result = Calendar.getInstance();
 		result.setTimeInMillis(time / 1000 * 1000);
 		return result;
 	}
